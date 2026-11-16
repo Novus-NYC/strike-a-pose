@@ -7,6 +7,7 @@ const vm = require("node:vm");
 const source = readFileSync(path.join(__dirname, "../docs/apps-script/notify-new-contacts.gs"), "utf8");
 const headers = ["Submitted At", "Name", "Email", "Phone #", "Event Date", "Event Type", "Venue Name/Address", "Preferred Experiences", "Hours", "Anything else we should know"];
 const checkpointKey = "STRIKE_A_POSE_LAST_NOTIFIED_ROW";
+const spreadsheetKey = "STRIKE_A_POSE_SPREADSHEET_ID";
 
 function fixture(options = {}) {
   const state = {
@@ -29,7 +30,7 @@ function fixture(options = {}) {
     Session: { getEffectiveUser: () => ({ getEmail: () => options.sender || "tahmid@novusnyc.org" }) },
     SpreadsheetApp: {
       getActiveSpreadsheet: () => spreadsheet,
-      openById: (id) => { assert.equal(id, "test-spreadsheet"); return spreadsheet; },
+      openById: () => { throw new Error("Not authorized to open spreadsheets by ID"); },
     },
     PropertiesService: { getScriptProperties: () => ({
       getProperty: (key) => state.properties[key] ?? null,
@@ -181,5 +182,15 @@ test("requires installation and rejects a checkpoint invalidated by deleted rows
   context.installContactNotifications();
   state.properties[checkpointKey] = "9";
   assert.throws(() => context.notifyNewContacts(), /append-only/);
+  assert.equal(state.emails.length, 0);
+});
+
+test("leaves pending rows untouched if the bound sheet does not match the installed ID", () => {
+  const { state, context } = fixture();
+  context.installContactNotifications();
+  state.rows.push(row());
+  state.properties[spreadsheetKey] = "another-spreadsheet";
+  assert.throws(() => context.notifyNewContacts(), /bound to the contact spreadsheet/);
+  assert.equal(state.properties[checkpointKey], "1");
   assert.equal(state.emails.length, 0);
 });

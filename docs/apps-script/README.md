@@ -20,7 +20,7 @@ as it is in the website integration.
    be pasted into the script.
 4. Select **installContactNotifications** in the function dropdown and click
    **Run**. Complete Google's account selection and authorization prompts using
-   `tahmid@novusnyc.org`. This authorizes access to the spreadsheet, sending
+   `tahmid@novusnyc.org`. This authorizes access to the bound spreadsheet, sending
    email, the signed-in account's email, and managing the script's timer.
 5. Open **Triggers** (the clock icon). Confirm there is one trigger for
    `notifyNewContacts`, with event source **Time-driven**, running every minute.
@@ -38,8 +38,9 @@ and does not create another timer for the same function under this account.
 
 - Website requests are written with the Sheets API. These writes do not fire
   edit, change, or form-submit triggers, so the script polls once per minute.
-- The timer works without the spreadsheet or browser remaining open. The script
-  stores the spreadsheet ID during setup and opens it explicitly on each run.
+- The timer works without the spreadsheet or browser remaining open. It reads
+  its bound spreadsheet using current-document permission and checks the ID saved
+  during setup before sending. Access to other spreadsheets is unnecessary.
 - Keep `Sheet1` as an append-only log. Do not sort, move, insert, or delete raw
   request rows. Use a separate tab for rearranged reports.
 - Each run processes up to 50 pending rows, limited by remaining email quota.

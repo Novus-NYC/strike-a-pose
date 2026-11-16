@@ -1,3 +1,4 @@
+/** @OnlyCurrentDoc */
 /**
  * Paste this entire file into Extensions > Apps Script in the contact sheet.
  * While signed into tahmid@novusnyc.org, run installContactNotifications once.
@@ -64,7 +65,11 @@ function notifyNewContacts() {
     if (!spreadsheetId || checkpoint === null) {
       throw new Error("Run installContactNotifications once before enabling notifications.");
     }
-    const spreadsheet = SpreadsheetApp.openById(spreadsheetId);
+    // A bound time trigger can access its own sheet with current-document permissions.
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    if (!spreadsheet || spreadsheet.getId() !== spreadsheetId) {
+      throw new Error("This timer must run from the Apps Script project bound to the contact spreadsheet.");
+    }
     const sheet = getContactSheet_(spreadsheet);
     const lastNotifiedRow = Number(checkpoint);
     const lastRow = sheet.getLastRow();
