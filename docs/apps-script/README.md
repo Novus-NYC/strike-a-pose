@@ -1,7 +1,7 @@
 # Contact notification setup
 
 The website already appends requests to `Sheet1`. This separate Google Apps
-Script emails each new request to `islamtahmidd@gmail.com` from
+Script emails each new request to `strikeapose526@gmail.com` from
 `tahmid@novusnyc.org`, with all ten columns, a link to the row, and the visitor's
 address as Reply-To. The backdrop choice is included in the final notes column,
 as it is in the website integration.
@@ -27,7 +27,7 @@ as it is in the website integration.
    The installer creates it. Do not add a second trigger manually.
 6. Submit a new request through the website. Expect a notification after a
    timer run, usually around a minute later, with possible scheduling delays.
-   Confirm From is `tahmid@novusnyc.org`, To is `islamtahmidd@gmail.com`, and
+   Confirm From is `tahmid@novusnyc.org`, To is `strikeapose526@gmail.com`, and
    all request details are included. Replying should address the visitor.
 
 The initial installation deliberately skips existing rows. Only requests added

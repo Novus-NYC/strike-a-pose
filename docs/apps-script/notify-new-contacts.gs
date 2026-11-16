@@ -5,7 +5,7 @@
  * No service account credentials or Vercel environment values belong here.
  */
 const CONTACT_NOTIFICATIONS = {
-  recipient: "islamtahmidd@gmail.com",
+  recipient: "strikeapose526@gmail.com",
   sender: "tahmid@novusnyc.org",
   sheetName: "Sheet1",
   spreadsheetProperty: "STRIKE_A_POSE_SPREADSHEET_ID",

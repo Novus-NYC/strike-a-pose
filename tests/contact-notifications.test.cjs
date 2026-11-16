@@ -86,7 +86,9 @@ test("emails every field, includes a row link, sets Reply-To, and does not resen
   context.notifyNewContacts();
   assert.equal(state.emails.length, 1);
   const email = state.emails[0];
-  assert.equal(email.to, "islamtahmidd@gmail.com");
+  assert.equal(email.to, "strikeapose526@gmail.com");
+  assert.equal(email.cc, undefined);
+  assert.equal(email.bcc, undefined);
   assert.equal(email.replyTo, "alex@example.com");
   for (let column = 0; column < headers.length; column++) {
     assert.ok(email.body.includes(`${headers[column]}: ${submission[column]}`));
